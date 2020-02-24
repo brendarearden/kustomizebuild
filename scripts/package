@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+cd $(dirname $0)/..
+BASEDIR=$(pwd)
+mkdir -p $BASEDIR/dist/artifacts
+
+cd $BASEDIR/bin
+tar -cvzf $BASEDIR/dist/artifacts/kustomize-${ARCH}.tar.gz kustomize
+cd $BASEDIR
