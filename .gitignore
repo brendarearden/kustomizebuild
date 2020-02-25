@@ -2,8 +2,8 @@
 *.iml
 .idea/
 /bin
+/tmp
 cover
 /.dapper
 /dist
 *.swp
-kustomize

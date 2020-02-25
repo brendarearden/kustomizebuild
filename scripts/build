@@ -3,14 +3,13 @@ set -e
 
 cd $(dirname $0)/..
 
-. ./scripts/version
-
 mkdir -p bin
+mkdir -p tmp
 
-git clone -b master --single-branch http://github.com/kubernetes-sigs/kustomize ./bin/
+git clone -b master --single-branch http://github.com/kubernetes-sigs/kustomize ./tmp/
 
-env GOOS=windows GOARCH=amd64 go build  -o ./bin/kustomize-Windows-x86_64.exe ./bin/kustomize/
-env GOOS=linux GOARCH=arm64 go build -o ./bin/kustomize-Linux-arm64 ./bin/kustomize
-env GOOS=linux GOARCH=amd64 go build -o ./bin/kustomize-Linux-amd64 ./bin/kustomize
+env GOOS=windows GOARCH=amd64 go build  -o ./bin/kustomize-Windows-x86_64.exe ./tmp/kustomize/
+env GOOS=linux GOARCH=arm64 go build -o ./bin/kustomize-Linux-arm64 ./tmp/kustomize
+env GOOS=linux GOARCH=amd64 go build -o ./bin/kustomize-Linux-amd64 ./tmp/kustomize
 
 echo Built ./bin/kustomize-$(uname -s)-$(uname -m)
