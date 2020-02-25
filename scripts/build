@@ -8,7 +8,6 @@ mkdir -p tmp
 
 git clone -b master --single-branch http://github.com/kubernetes-sigs/kustomize ./tmp/
 
-env GOOS=windows GOARCH=amd64 go build  -o ./bin/kustomize-Windows-x86_64.exe ./tmp/kustomize/
 env GOOS=linux GOARCH=arm64 go build -o ./bin/kustomize-Linux-arm64 ./tmp/kustomize
 env GOOS=linux GOARCH=amd64 go build -o ./bin/kustomize-Linux-amd64 ./tmp/kustomize
 
