@@ -5,26 +5,12 @@ cd $(dirname $0)/..
 
 . ./scripts/version
 
-echo $VERSION
-echo $CROSS
 mkdir -p bin
 
 git clone -b master --single-branch http://github.com/kubernetes-sigs/kustomize ./bin/
 
-if [ "$CROSS" = 1 ]; then
-    CGO_ENABLED=0 GOOS=darwin go build -ldflags "-X main.VERSION=$VERSION"  -o ./bin/kustomize-Darwin-x86_64 ./bin/kustomize/
-    CGO_ENABLED=0 GOOS=windows go build -ldflags "-X main.VERSION=$VERSION" -o ./bin/kustomize-Windows-x86_64.exe ./bin/kustomize/
-    CGO_ENABLED=0 GOARCH=arm64 go build -a -tags netgo -installsuffix netgo -ldflags "-X main.VERSION=$VERSION" -o ./bin/kustomize-Linux-arm64 ./bin/kustomize/
-    CGO_ENABLED=0 GOARCH=ppc64le go build -a -tags netgo -installsuffix netgo -ldflags "-X main.VERSION=$VERSION" -o ./bin/kustomize-Linux-ppc64le ./bin/kustomize/
-    CGO_ENABLED=0 GOARCH=arm GOARM=6 go build -a -tags netgo -installsuffix netgo -ldflags "-X main.VERSION=$VERSION" -o ./bin/kustomize-Linux-arm ./bin/kustomize/
-    CGO_ENABLED=0 GOARCH=arm GOARM=6 go build -a -tags netgo -installsuffix netgo -ldflags "-X main.VERSION=$VERSION" -o ./bin/kustomize-Linux-armv6l ./bin/kustomize/
-    CGO_ENABLED=0 GOARCH=arm GOARM=7 go build -a -tags netgo -installsuffix netgo -ldflags "-X main.VERSION=$VERSION" -o ./bin/kustomize-Linux-armv7l ./bin/kustomize/
-    CGO_ENABLED=0 GOARCH=amd64 go build -a -tags netgo -installsuffix netgo -ldflags "-X main.VERSION=$VERSION -extldflags '-static -s'" -o ./bin/kustomize-Linux-x86_64 ./bin/kustomize/
-    cp ./bin/kustomize-Linux-arm64 ./bin/kustomize-Linux-aarch64
+env GOOS=windows GOARCH=amd64 go build  -o ./bin/kustomize-Windows-x86_64.exe ./bin/kustomize/
+env GOOS=linux GOARCH=arm64 go build -o ./bin/kustomize-Linux-arm64 ./bin/kustomize
+env GOOS=linux GOARCH=amd64 go build -o ./bin/kustomize-Linux-amd64 ./bin/kustomize
 
-    cp ./bin/kustomize-$(uname -s)-$(uname -m) ./bin/kustomize
-    echo Built ./bin/kustomize-$(uname -s)-$(uname -m)
-else
-    CGO_ENABLED=0 go build -a -tags netgo -installsuffix netgo -ldflags "-X main.VERSION=$VERSION -extldflags '-static -s'" -o ./bin/kustomize ./bin/kustomize/
-    echo Built ./bin/kustomize
-fi
+echo Built ./bin/kustomize-$(uname -s)-$(uname -m)
